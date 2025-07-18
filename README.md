@@ -133,14 +133,15 @@ Make sure the following libraries are installed (included in `requirements.txt`)
 
 ---
 
-👥 Authors
-Sugam Dahal
-📍 Kathmandu, Nepal
-🔗 GitHub: @sugam24
+## 👥 Authors
 
-Pranil Parajuli
+**Sugam Dahal**
 📍 Kathmandu, Nepal
-🔗 GitHub: @praniil
+🔗 GitHub: [@sugam24](https://github.com/sugam24)
+
+**Pranil Parajuli**
+📍 Kathmandu, Nepal
+🔗 GitHub: [@praniil](https://github.com/praniil)
 
 ---
 
@@ -148,9 +149,4 @@ Pranil Parajuli
 
 This project is for educational purposes and research use. You are free to use and modify it with proper attribution.
 
-```
-
----
-
-Let me know if you'd like badges, interactive demo links, or Docker setup included!
 ```
