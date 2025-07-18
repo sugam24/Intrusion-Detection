@@ -1,10 +1,6 @@
 ```markdown
 # Intrusion Detection System (IDS) using Machine Learning
 
-![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
-![Scikit-learn](https://img.shields.io/badge/Scikit--learn-1.0%2B-orange)
-![License](https://img.shields.io/badge/License-MIT-green)
-
 A machine learning-based intrusion detection system using the NSL-KDD dataset, implementing various classification algorithms for network attack detection.
 
 ## Features
@@ -101,21 +97,3 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 [MIT](https://choosealicense.com/licenses/mit/)
 ```
-
-### Key Features of This README:
-1. **Badges** - Visual indicators for Python version and dependencies
-2. **Clear Installation** - Step-by-step setup instructions
-3. **Kaggle Setup** - Specific instructions for dataset access
-4. **Project Structure** - Visual representation of files
-5. **Usage** - Simple commands to run the project
-6. **Future-Proof** - Includes sections for contributions and licensing
-
-To use:
-1. Copy this content to a file named `README.md` in your project root
-2. Customize any sections (especially the dataset info if you change sources)
-3. Commit to your repository:
-   ```bash
-   git add README.md
-   git commit -m "Add project README"
-   git push
-   ```
