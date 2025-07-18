@@ -1,150 +1,139 @@
-```markdown
-# NSL-KDD Intrusion Detection using Machine Learning
+---
 
-This project implements and compares various machine learning models for network intrusion detection using the **NSL-KDD** dataset. It includes steps for automatic dataset download, preprocessing, dimensionality reduction (PCA), model training, evaluation, and visualisation.
+# 🚨 NSL-KDD Intrusion Detection using Machine Learning
+
+This project implements and compares several machine learning models for detecting network intrusions using the **NSL-KDD** dataset. It automates dataset setup, applies preprocessing techniques, trains models, and evaluates them with visual metrics.
 
 ---
 
-## 🔍 Overview
+## ✨ Highlights
 
-- Automatically downloads the NSL-KDD dataset from Kaggle.
-- Preprocesses data with robust scaling and one-hot encoding.
-- Applies PCA for optional dimensionality reduction.
-- Trains multiple classification models including:
-  - Logistic Regression
-  - K-Nearest Neighbours
-  - Naive Bayes
-  - Linear SVM
-  - Decision Tree
-  - Random Forest
-  - XGBoost
-- Evaluates models using Accuracy, Precision, Recall, and Confusion Matrix.
-- Visualises:
-  - Feature importance (Random Forest & XGBoost)
-  - Decision Tree (depth-limited)
-  - Model comparison metrics
+✔️ Automatic dataset download from Kaggle
+✔️ Categorical encoding + robust feature scaling
+✔️ Optional dimensionality reduction with PCA
+✔️ Multiple classifiers tested and compared
+✔️ Confusion matrix, feature importance, and decision tree visualisations
+✔️ Clean and reproducible ML pipeline
 
 ---
 
-## 📁 Project Structure
+## 📂 Project Structure
 
 ```
-
 .
-├── dataextraction.py         # Script to download and set up dataset from Kaggle
-├── main.py                   # Core pipeline: preprocessing, training, evaluation
-├── requirements.txt          # Python dependencies
-├── .gitignore                # Git ignore config
-└── README.md                 # Project documentation (this file)
-
-````
-
----
-
-## ⚙️ Setup Instructions
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/sugam24/nsl-kdd-ml.git
-cd nsl-kdd-ml
-````
-
-### 2. Create Virtual Environment
-
-```bash
-python3 -m venv venv
-source venv/bin/activate  # For Linux/macOS
-venv\Scripts\activate     # For Windows
-```
-
-### 3. Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Authenticate with Kaggle
-
-Ensure you have your Kaggle API credentials set up (i.e., a valid `~/.kaggle/kaggle.json` file). Learn more: [Kaggle API Docs](https://www.kaggle.com/docs/api)
-
-### 5. Run the Dataset Setup
-
-```bash
-python dataextraction.py
-```
-
-### 6. Run the Main Pipeline
-
-```bash
-python main.py
+├── dataextraction.py     # Downloads and extracts the NSL-KDD dataset
+├── main.py               # Preprocessing, training, evaluation, visualisation
+├── requirements.txt      # Python dependencies
+├── .gitignore            # Files/folders to ignore in version control
+└── README.md             # Project overview and documentation
 ```
 
 ---
 
-## 🧠 Models Compared
+## ⚙️ How to Run
 
-| Model               | Accuracy | Precision | Recall |
-| ------------------- | -------- | --------- | ------ |
-| Logistic Regression | ✅        | ✅         | ✅      |
-| KNN                 | ✅        | ✅         | ✅      |
-| Naive Bayes         | ✅        | ✅         | ✅      |
-| Linear SVM          | ✅        | ✅         | ✅      |
-| Decision Tree       | ✅        | ✅         | ✅      |
-| Random Forest       | ✅        | ✅         | ✅      |
-| XGBoost             | ✅        | ✅         | ✅      |
+1. **Clone the Repository**
 
-*Exact metrics will be shown during execution via confusion matrices and bar plots.*
+   ```bash
+   git clone https://github.com/sugam24/nsl-kdd-ml.git
+   cd nsl-kdd-ml
+   ```
 
----
+2. **Create and Activate Virtual Environment**
 
-## 📊 Visualisations Included
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # For Linux/macOS
+   venv\Scripts\activate     # For Windows
+   ```
 
-* Confusion matrices for each model
-* Top 20 feature importances for:
+3. **Install Required Libraries**
 
-  * Random Forest
-  * XGBoost
-* Decision tree visual (depth=3)
-* Bar plots comparing model performance metrics
+   ```bash
+   pip install -r requirements.txt
+   ```
 
----
+4. **Set Up Kaggle API Access**
 
-## 📦 Dataset
+   * Download `kaggle.json` from your Kaggle account.
+   * Place it inside `~/.kaggle/` directory.
 
-* **NSL-KDD** (hosted on Kaggle): A refined version of the KDD Cup 1999 dataset, widely used for intrusion detection research.
-* Dataset link: [https://www.kaggle.com/datasets/hassan06/nslkdd](https://www.kaggle.com/datasets/hassan06/nslkdd)
+5. **Download the Dataset**
 
----
+   ```bash
+   python dataextraction.py
+   ```
 
-## 📑 Requirements
+6. **Run the ML Pipeline**
 
-Make sure the following libraries are installed (included in `requirements.txt`):
-
-* `numpy`
-* `pandas`
-* `matplotlib`
-* `seaborn`
-* `scikit-learn`
-* `xgboost`
-* `kagglehub`
+   ```bash
+   python main.py
+   ```
 
 ---
 
-## 👥 Authors
+## 🧠 Models Trained
+
+* Logistic Regression
+* K-Nearest Neighbours (KNN)
+* Naive Bayes
+* Linear SVM
+* Decision Tree
+* Random Forest
+* XGBoost
+
+Each model is evaluated using:
+
+* Accuracy
+* Precision
+* Recall
+* Confusion Matrix
+
+---
+
+## 📊 Visual Outputs
+
+* 🔷 Confusion matrix for each model
+* 📈 Feature importance plots (Random Forest, XGBoost)
+* 🌳 Decision tree visual (max depth = 3)
+* 📊 Comparison bar charts for accuracy, precision, and recall
+
+---
+
+## 🗂 Dataset Used
+
+**NSL-KDD** – A cleaned and improved version of the KDD'99 dataset
+📥 Source: [Kaggle - hassan06/nslkdd](https://www.kaggle.com/datasets/hassan06/nslkdd)
+
+---
+
+## 🧾 Dependencies
+
+* `numpy`, `pandas` – data manipulation
+* `matplotlib`, `seaborn` – plotting
+* `scikit-learn` – machine learning models & metrics
+* `xgboost` – gradient boosting classifier
+* `kagglehub` – easy dataset download from Kaggle
+
+(Everything is listed in `requirements.txt`)
+
+---
+
+## 👨‍💻 Authors
 
 **Sugam Dahal**
 📍 Kathmandu, Nepal
-🔗 GitHub: [@sugam24](https://github.com/sugam24)
+🔗 [github.com/sugam24](https://github.com/sugam24)
 
 **Pranil Parajuli**
 📍 Kathmandu, Nepal
-🔗 GitHub: [@praniil](https://github.com/praniil)
+🔗 [github.com/praniil](https://github.com/praniil)
 
 ---
 
 ## 📜 License
 
-This project is for educational purposes and research use. You are free to use and modify it with proper attribution.
+This project is for educational and research purposes.
+Feel free to use, adapt, and cite with proper credit.
 
-```
+---
