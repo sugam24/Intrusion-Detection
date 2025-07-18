@@ -1,0 +1,16 @@
+# Core requirements
+numpy>=1.21.0
+pandas>=1.3.0
+matplotlib>=3.4.0
+seaborn>=0.11.0
+scikit-learn>=1.0.0
+xgboost>=1.5.0
+
+# Kaggle dataset download
+kagglehub>=0.1.0
+
+# Additional utilities
+tqdm>=4.0.0  # For progress bars (recommended for data loading)
+
+# Optional (for better performance)
+joblib>=1.0.0  # For parallel processing
