@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.preprocessing import RobustScaler
 from sklearn.decomposition import PCA
-from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, accuracy_score, precision_score, recall_score
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import GaussianNB
@@ -14,7 +13,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import LinearSVC
 from xgboost import XGBClassifier
 
-# === Load dataset ===
+# === Column Names ===
 columns = ['duration','protocol_type','service','flag','src_bytes','dst_bytes','land','wrong_fragment','urgent','hot',
            'num_failed_logins','logged_in','num_compromised','root_shell','su_attempted','num_root','num_file_creations',
            'num_shells','num_access_files','num_outbound_cmds','is_host_login','is_guest_login','count','srv_count','serror_rate',
@@ -23,31 +22,41 @@ columns = ['duration','protocol_type','service','flag','src_bytes','dst_bytes','
            'dst_host_srv_diff_host_rate','dst_host_serror_rate','dst_host_srv_serror_rate','dst_host_rerror_rate',
            'dst_host_srv_rerror_rate','outcome','level']
 
-data = pd.read_csv("dataset/KDDTrain+.txt", names=columns)
+# === Load Datasets ===
+train_data = pd.read_csv("dataset/KDDTrain+.txt", names=columns)
+test_data = pd.read_csv("dataset/KDDTest+.txt", names=columns)
 
-# === Binary label ===
-data['outcome'] = data['outcome'].apply(lambda x: 0 if x.strip() == 'normal' else 1)
+# === Label Encoding: Binary (normal=0, attack=1) ===
+train_data['outcome'] = train_data['outcome'].apply(lambda x: 0 if x.strip() == 'normal' else 1)
+test_data['outcome'] = test_data['outcome'].apply(lambda x: 0 if x.strip() == 'normal' else 1)
 
-# === Preprocessing ===
+# === Categorical Columns ===
 cat_cols = ['protocol_type','service','flag','land','logged_in','is_host_login','is_guest_login']
-X = data.drop(columns=['outcome', 'level'])
-y = data['outcome']
 
-# One-hot encoding for categorical features
-X = pd.get_dummies(X, columns=cat_cols)
+# === Separate Features and Labels ===
+X_train = train_data.drop(columns=['outcome', 'level'])
+y_train = train_data['outcome']
+X_test = test_data.drop(columns=['outcome', 'level'])
+y_test = test_data['outcome']
 
-# Robust Scaling for numeric features
+# === One-hot Encoding ===
+X_train = pd.get_dummies(X_train, columns=cat_cols)
+X_test = pd.get_dummies(X_test, columns=cat_cols)
+
+# === Align Test Set Columns ===
+X_test = X_test.reindex(columns=X_train.columns, fill_value=0)
+
+# === Robust Scaling ===
 scaler = RobustScaler()
-X_scaled = scaler.fit_transform(X)
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
 
-# === PCA (optional) ===
+# === PCA (optional, for analysis & comparison) ===
 pca = PCA(n_components=20)
-X_pca = pca.fit_transform(X_scaled)
-print(f"Original: {X.shape[1]}, After PCA: {X_pca.shape[1]}")
+X_train_pca = pca.fit_transform(X_train_scaled)
+X_test_pca = pca.transform(X_test_scaled)
 
-# === Train-Test Split ===
-X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
-X_train_pca, X_test_pca, _, _ = train_test_split(X_pca, y, test_size=0.2, random_state=42)
+print(f"Original Features: {X_train.shape[1]}, After PCA: {X_train_pca.shape[1]}")
 
 # === Evaluation Function ===
 results = {}
@@ -65,23 +74,26 @@ def evaluate_model(model, name, X_tr, X_te, y_tr, y_te):
     disp.plot(cmap='Blues')
     plt.title(f"Confusion Matrix - {name}")
     plt.grid(False)
-    plt.show()
+    plt.show(block=False)
+    plt.pause(2)
+    plt.close()
 
-# === Train Models ===
+# === Define Models ===
 models = {
-    "Logistic Regression": LogisticRegression(),
+    "Logistic Regression": LogisticRegression(max_iter=1000),
     "K-Nearest Neighbors": KNeighborsClassifier(n_neighbors=20),
     "Naive Bayes": GaussianNB(),
-    "Linear SVM": LinearSVC(),
+    "Linear SVM": LinearSVC(max_iter=10000),
     "Decision Tree": DecisionTreeClassifier(),
     "Random Forest": RandomForestClassifier(),
     "XGBoost": XGBClassifier(use_label_encoder=False, eval_metric='logloss')
 }
 
+# === Train & Evaluate ===
 for name, model in models.items():
-    evaluate_model(model, name, X_train, X_test, y_train, y_test)
+    evaluate_model(model, name, X_train_scaled, X_test_scaled, y_train, y_test)
 
-# === Feature Importance from XGBoost and RandomForest ===
+# === Feature Importance for Tree-Based Models ===
 def plot_feature_importance(model, X, title, top_n=20):
     if hasattr(model, "feature_importances_"):
         importances = model.feature_importances_
@@ -90,16 +102,21 @@ def plot_feature_importance(model, X, title, top_n=20):
         plt.figure(figsize=(10, 6))
         plt.barh(names, importances[idx])
         plt.title(f"{title} - Top {top_n} Features")
-        plt.show()
+        plt.xlabel("Importance")
+        plt.show(block=False)
+        plt.pause(2)
+        plt.close()
 
-plot_feature_importance(models["Random Forest"], pd.DataFrame(X_scaled, columns=X.columns), "Random Forest")
-plot_feature_importance(models["XGBoost"], pd.DataFrame(X_scaled, columns=X.columns), "XGBoost")
+plot_feature_importance(models["Random Forest"], pd.DataFrame(X_train_scaled, columns=X_train.columns), "Random Forest")
+plot_feature_importance(models["XGBoost"], pd.DataFrame(X_train_scaled, columns=X_train.columns), "XGBoost")
 
 # === Decision Tree Visualization ===
 plt.figure(figsize=(16, 10))
-plot_tree(models["Decision Tree"], filled=True, feature_names=X.columns, class_names=["Normal", "Attack"], max_depth=3)
+plot_tree(models["Decision Tree"], filled=True, feature_names=X_train.columns, class_names=["Normal", "Attack"], max_depth=3)
 plt.title("Decision Tree (depth=3)")
-plt.show()
+plt.show(block=False)
+plt.pause(2)
+plt.close()
 
 # === Model Comparison Plot ===
 def plot_comparison(metric_idx, title):
@@ -111,7 +128,9 @@ def plot_comparison(metric_idx, title):
     plt.ylabel(title)
     plt.title(f"Model Comparison - {title}")
     plt.tight_layout()
-    plt.show()
+    plt.show(block=False)
+    plt.pause(2)
+    plt.close()
 
 plot_comparison(0, "Accuracy")
 plot_comparison(1, "Precision")
