@@ -2,9 +2,14 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+
 from sklearn.preprocessing import RobustScaler
 from sklearn.decomposition import PCA
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, accuracy_score, precision_score, recall_score
+from sklearn.metrics import (
+    confusion_matrix, ConfusionMatrixDisplay,
+    accuracy_score, precision_score, recall_score, f1_score
+)
+
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
@@ -64,11 +69,16 @@ results = {}
 def evaluate_model(model, name, X_tr, X_te, y_tr, y_te):
     model.fit(X_tr, y_tr)
     y_pred = model.predict(X_te)
+
     acc = accuracy_score(y_te, y_pred)
     prec = precision_score(y_te, y_pred)
     rec = recall_score(y_te, y_pred)
-    results[name] = [acc, prec, rec]
-    print(f"\n{name} - Accuracy: {acc:.4f}, Precision: {prec:.4f}, Recall: {rec:.4f}")
+    f1 = f1_score(y_te, y_pred)
+
+    results[name] = [acc, prec, rec, f1]
+
+    print(f"\n{name} - Accuracy: {acc:.4f}, Precision: {prec:.4f}, Recall: {rec:.4f}, F1 Score: {f1:.4f}")
+
     cm = confusion_matrix(y_te, y_pred)
     disp = ConfusionMatrixDisplay(cm, display_labels=['Normal', 'Attack'])
     disp.plot(cmap='Blues')
@@ -89,7 +99,7 @@ models = {
     "XGBoost": XGBClassifier(use_label_encoder=False, eval_metric='logloss')
 }
 
-# === Train & Evaluate ===
+# === Train & Evaluate Each Model ===
 for name, model in models.items():
     evaluate_model(model, name, X_train_scaled, X_test_scaled, y_train, y_test)
 
@@ -135,3 +145,4 @@ def plot_comparison(metric_idx, title):
 plot_comparison(0, "Accuracy")
 plot_comparison(1, "Precision")
 plot_comparison(2, "Recall")
+plot_comparison(3, "F1 Score")
