@@ -8,12 +8,12 @@ This project implements and compares several machine learning models for detecti
 
 ## ✨ Highlights
 
-✔️ Automatic dataset download from Kaggle
-✔️ Categorical encoding + robust feature scaling
-✔️ Optional dimensionality reduction with PCA
-✔️ Multiple classifiers tested and compared
-✔️ Confusion matrix, feature importance, and decision tree visualisations
-✔️ Clean and reproducible ML pipeline
+- ✔️ Automatic dataset download from Kaggle  
+- ✔️ Categorical encoding + robust feature scaling  
+- ✔️ Optional dimensionality reduction with PCA  
+- ✔️ Multiple classifiers tested and compared  
+- ✔️ Confusion matrix, feature importance, and decision tree visualisations
+
 
 ---
 
@@ -35,8 +35,8 @@ This project implements and compares several machine learning models for detecti
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/sugam24/nsl-kdd-ml.git
-   cd nsl-kdd-ml
+   git clone https://github.com/sugam24/Intrusion-Detection.git
+   cd Intrusion-Detection
    ```
 
 2. **Create and Activate Virtual Environment**
