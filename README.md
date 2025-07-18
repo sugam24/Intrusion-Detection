@@ -1,99 +1,156 @@
+---
+
 ```markdown
-# Intrusion Detection System (IDS) using Machine Learning
+# NSL-KDD Intrusion Detection using Machine Learning
 
-A machine learning-based intrusion detection system using the NSL-KDD dataset, implementing various classification algorithms for network attack detection.
+This project implements and compares various machine learning models for network intrusion detection using the **NSL-KDD** dataset. It includes steps for automatic dataset download, preprocessing, dimensionality reduction (PCA), model training, evaluation, and visualisation.
 
-## Features
+---
 
-- Data extraction and preprocessing pipeline
-- Multiple ML models for attack detection:
+## 🔍 Overview
+
+- Automatically downloads the NSL-KDD dataset from Kaggle.
+- Preprocesses data with robust scaling and one-hot encoding.
+- Applies PCA for optional dimensionality reduction.
+- Trains multiple classification models including:
   - Logistic Regression
-  - K-Nearest Neighbors
+  - K-Nearest Neighbours
   - Naive Bayes
-  - SVM
-  - Decision Trees
+  - Linear SVM
+  - Decision Tree
   - Random Forest
   - XGBoost
-- Feature importance visualization
-- Model performance comparison metrics
+- Evaluates models using Accuracy, Precision, Recall, and Confusion Matrix.
+- Visualises:
+  - Feature importance (Random Forest & XGBoost)
+  - Decision Tree (depth-limited)
+  - Model comparison metrics
 
-## Installation
+---
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/sugam24/Intrusion-Detection.git
-   cd Intrusion-Detection
-   ```
-
-2. **Set up virtual environment**:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # Linux/Mac
-   # OR
-   .\venv\Scripts\activate  # Windows
-   ```
-
-3. **Install dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Set up Kaggle API** (for dataset download):
-   - Get your API token from [Kaggle](https://www.kaggle.com/docs/api)
-   - Run:
-     ```bash
-     kaggle login
-     ```
-
-## Usage
-
-1. **Download and prepare dataset**:
-   ```bash
-   python data_extraction.py
-   ```
-
-2. **Run the main analysis**:
-   ```bash
-   python main.py
-   ```
-
-## Project Structure
+## 📁 Project Structure
 
 ```
-Intrusion-Detection/
-├── dataset/                  # Dataset files (auto-created)
-├── venv/                    # Virtual environment (ignored)
-├── .gitignore
-├── data_extraction.py        # Dataset download and preparation
-├── main.py                  # Main analysis and modeling
-├── README.md
-└── requirements.txt         # Dependencies
+
+.
+├── dataextraction.py         # Script to download and set up dataset from Kaggle
+├── main.py                   # Core pipeline: preprocessing, training, evaluation
+├── requirements.txt          # Python dependencies
+├── .gitignore                # Git ignore config
+└── README.md                 # Project documentation (this file)
+
+````
+
+---
+
+## ⚙️ Setup Instructions
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/sugam24/nsl-kdd-ml.git
+cd nsl-kdd-ml
+````
+
+### 2. Create Virtual Environment
+
+```bash
+python3 -m venv venv
+source venv/bin/activate  # For Linux/macOS
+venv\Scripts\activate     # For Windows
 ```
 
-## Dataset
+### 3. Install Dependencies
 
-The project uses the [NSL-KDD](https://www.kaggle.com/datasets/hassan06/nslkdd) dataset, which is an improved version of the KDD Cup 99 dataset for network intrusion detection.
+```bash
+pip install -r requirements.txt
+```
 
-## Results
+### 4. Authenticate with Kaggle
 
-The system evaluates models based on:
-- Accuracy
-- Precision
-- Recall
-- Confusion matrices
-- Feature importance
+Ensure you have your Kaggle API credentials set up (i.e., a valid `~/.kaggle/kaggle.json` file). Learn more: [Kaggle API Docs](https://www.kaggle.com/docs/api)
 
-Sample output includes visualizations of:
-- Model performance comparison
-- Confusion matrices
-- Decision tree structures
-- Feature importance rankings
+### 5. Run the Dataset Setup
 
-## Contributing
+```bash
+python dataextraction.py
+```
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+### 6. Run the Main Pipeline
 
-## License
+```bash
+python main.py
+```
 
-[MIT](https://choosealicense.com/licenses/mit/)
+---
+
+## 🧠 Models Compared
+
+| Model               | Accuracy | Precision | Recall |
+| ------------------- | -------- | --------- | ------ |
+| Logistic Regression | ✅        | ✅         | ✅      |
+| KNN                 | ✅        | ✅         | ✅      |
+| Naive Bayes         | ✅        | ✅         | ✅      |
+| Linear SVM          | ✅        | ✅         | ✅      |
+| Decision Tree       | ✅        | ✅         | ✅      |
+| Random Forest       | ✅        | ✅         | ✅      |
+| XGBoost             | ✅        | ✅         | ✅      |
+
+*Exact metrics will be shown during execution via confusion matrices and bar plots.*
+
+---
+
+## 📊 Visualisations Included
+
+* Confusion matrices for each model
+* Top 20 feature importances for:
+
+  * Random Forest
+  * XGBoost
+* Decision tree visual (depth=3)
+* Bar plots comparing model performance metrics
+
+---
+
+## 📦 Dataset
+
+* **NSL-KDD** (hosted on Kaggle): A refined version of the KDD Cup 1999 dataset, widely used for intrusion detection research.
+* Dataset link: [https://www.kaggle.com/datasets/hassan06/nslkdd](https://www.kaggle.com/datasets/hassan06/nslkdd)
+
+---
+
+## 📑 Requirements
+
+Make sure the following libraries are installed (included in `requirements.txt`):
+
+* `numpy`
+* `pandas`
+* `matplotlib`
+* `seaborn`
+* `scikit-learn`
+* `xgboost`
+* `kagglehub`
+
+---
+
+👥 Authors
+Sugam Dahal
+📍 Kathmandu, Nepal
+🔗 GitHub: @sugam24
+
+Pranil Parajuli
+📍 Kathmandu, Nepal
+🔗 GitHub: @praniil
+
+---
+
+## 📜 License
+
+This project is for educational purposes and research use. You are free to use and modify it with proper attribution.
+
+```
+
+---
+
+Let me know if you'd like badges, interactive demo links, or Docker setup included!
 ```
