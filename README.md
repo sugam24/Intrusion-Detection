@@ -8,11 +8,11 @@ This project implements and compares several machine learning models for detecti
 
 ## ✨ Highlights
 
-- ✔️ Automatic dataset download from Kaggle  
-- ✔️ Categorical encoding + robust feature scaling  
-- ✔️ Optional dimensionality reduction with PCA  
-- ✔️ Multiple classifiers tested and compared  
-- ✔️ Confusion matrix, feature importance, and decision tree visualisations
+- Automatic dataset download from Kaggle  
+- Categorical encoding + robust feature scaling  
+- Optional dimensionality reduction with PCA  
+- Multiple classifiers tested and compared  
+- Confusion matrix, feature importance, and decision tree visualisations
 
 
 ---
