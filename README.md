@@ -1,5 +1,3 @@
----
-
 ```markdown
 # NSL-KDD Intrusion Detection using Machine Learning
 
