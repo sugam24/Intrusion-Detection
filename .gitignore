@@ -1,0 +1,19 @@
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Dataset folder
+dataset/
+
+# Python cache and build files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Other common ignores
+.DS_Store
+.idea/
+.vscode/
+*.log
+*.sqlite3
