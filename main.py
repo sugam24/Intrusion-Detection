@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 from sklearn.preprocessing import RobustScaler
 from sklearn.metrics import (
@@ -48,18 +47,18 @@ scaler = RobustScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
-# === Balance Training Data Using SMOTE ===
+#Balance Training Data Using SMOTE 
 smote = SMOTE(random_state=42)
 X_train_bal, y_train_bal = smote.fit_resample(X_train_scaled, y_train)
 
-# === Feature Selection Using SelectKBest (on balanced data) ===
+#Feature Selection Using SelectKBest
 selector = SelectKBest(score_func=mutual_info_classif, k=40)
 X_train_bal = selector.fit_transform(X_train_bal, y_train_bal)
 
 X_train_selected = selector.transform(X_train_scaled)
 X_test_selected = selector.transform(X_test_scaled)
 
-# === Evaluation Function ===
+# Evaluation Function 
 results = {}
 
 def evaluate_model(model, name, X_tr, X_te, y_tr, y_te):
@@ -107,19 +106,15 @@ models = {
     )
 }
 
-# === Train & Evaluate Each Model ===
+# Train and evaluation
 for name, model in models.items():
     if name in ["Decision Tree", "Random Forest"]:
-        # Use selected features on original scaled train/test (no SMOTE)
         evaluate_model(model, name, X_train_selected, X_test_selected, y_train, y_test)
     elif name == "XGBoost":
-        # Use SMOTE balanced + selected features for XGBoost
         evaluate_model(model, name, X_train_bal, X_test_selected, y_train_bal, y_test)
     else:
-        # Other models on selected features (no SMOTE)
         evaluate_model(model, name, X_train_selected, X_test_selected, y_train, y_test)
 
-# === Feature Importance for Tree-Based Models ===
 def plot_feature_importance(model, feature_names, title, top_n=40):
     if hasattr(model, "feature_importances_"):
         importances = model.feature_importances_
@@ -134,13 +129,12 @@ def plot_feature_importance(model, feature_names, title, top_n=40):
         plt.pause(2)
         plt.close()
 
-# Use selected feature names from the selector
 selected_features = np.array(X_train.columns)[selector.get_support()]
 
 plot_feature_importance(models["Random Forest"], selected_features, "Random Forest")
 plot_feature_importance(models["XGBoost"], selected_features, "XGBoost")
 
-# === Decision Tree Visualization ===
+# Decision Tree Visualization
 plt.figure(figsize=(16, 10))
 plot_tree(models["Decision Tree"], filled=True, feature_names=selected_features, class_names=["Normal", "Attack"], max_depth=3)
 plt.title("Decision Tree (depth=3)")
@@ -149,7 +143,7 @@ plt.show(block=False)
 plt.pause(2)
 plt.close()
 
-# === Model Comparison Plot ===
+# Model Comparison Plot
 def plot_comparison(metric_idx, title):
     names = list(results.keys())
     vals = [metrics[metric_idx] for metrics in results.values()]
