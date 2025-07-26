@@ -57,7 +57,26 @@ X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
 # === PCA (optional, for analysis & comparison) ===
-pca = PCA(n_components=20)
+pca = PCA(n_components=30)
+pca.fit(X_train_scaled)
+
+#checking the variance of features 
+explained_variance = np.cumsum(pca.explained_variance_ratio_)
+
+plt.figure(figsize=(10, 5))
+plt.plot(range(1, len(explained_variance) + 1), explained_variance, marker='o')
+plt.axhline(y=0.95, color='r', linestyle='--', label='95% variance')
+plt.title("Explained Variance vs Number of PCA Components")
+plt.xlabel("Number of Components")
+plt.ylabel("Cumulative Explained Variance")
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.savefig("results/PCA Variance Explained.jpg")
+plt.show()
+plt.pause(2)
+plt.close()
+
 X_train_pca = pca.fit_transform(X_train_scaled)
 X_test_pca = pca.transform(X_test_scaled)
 
@@ -69,7 +88,6 @@ results = {}
 def evaluate_model(model, name, X_tr, X_te, y_tr, y_te):
     model.fit(X_tr, y_tr)
     y_pred = model.predict(X_te)
-
     acc = accuracy_score(y_te, y_pred)
     prec = precision_score(y_te, y_pred)
     rec = recall_score(y_te, y_pred)
@@ -91,13 +109,13 @@ def evaluate_model(model, name, X_tr, X_te, y_tr, y_te):
 
 # === Define Models ===
 models = {
-    "Logistic Regression": LogisticRegression(max_iter=1000),
-    "K-Nearest Neighbors": KNeighborsClassifier(n_neighbors=20),
+    "Logistic Regression": LogisticRegression(max_iter=3000),
+    "K-Nearest Neighbors": KNeighborsClassifier(n_neighbors=30),
     "Naive Bayes": GaussianNB(),
-    "Linear SVM": LinearSVC(max_iter=10000),
+    "Linear SVM": LinearSVC(max_iter=20000),
     "Decision Tree": DecisionTreeClassifier(),
     "Random Forest": RandomForestClassifier(),
-    "XGBoost": XGBClassifier(use_label_encoder=False, eval_metric='logloss')
+    "XGBoost": XGBClassifier(use_label_encoder=False, eval_metric='logloss', n_estimators=400, max_depth=10)
 }
 
 # === Train & Evaluate Each Model ===
@@ -105,7 +123,7 @@ for name, model in models.items():
     evaluate_model(model, name, X_train_scaled, X_test_scaled, y_train, y_test)
 
 # === Feature Importance for Tree-Based Models ===
-def plot_feature_importance(model, X, title, top_n=20):
+def plot_feature_importance(model, X, title, top_n=30):
     if hasattr(model, "feature_importances_"):
         importances = model.feature_importances_
         idx = np.argsort(importances)[-top_n:]
